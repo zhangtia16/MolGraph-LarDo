@@ -1,0 +1,27 @@
+batch_size: 8                # batch size 32
+epochs: 100 #100                     # total number of epochs 100
+eval_every_n_epochs: 1          # validation frequency
+fine_tune_from:  llmclip_[freesolv]_[gin]_[None]_[mistral]_wo_rdkit  # sub directory of pre-trained model in ./ckpt None bbbp_gin_clip_pretrain_from_None clintox_gin_clip_pretrain_from_pubchem_pretrained_gin wo_stage1
+log_every_n_steps: 50           # print training log frequency
+fp16_precision: False           # float precision 16 (i.e. True/False)
+init_lr: 0.0001                 # initial learning rate for the prediction head 0.0005 0.0001 for bbbp
+init_base_lr: 0.0001             # initial learning rate for the base GNN encoder 0.0001
+weight_decay: 1e-6              # weight decay of Adam
+gpu: cuda:4                     # training GPU
+task_name: FreeSolv                 # name of fine-tuning benchmark, inlcuding
+                                # classifications: BBBP/BACE/ClinTox/Tox21/HIV/SIDER/MUV
+                                # regressions: FreeSolv/ESOL/Lipo/qm7/qm8/qm9
+
+model_type: gin                 # GNN backbone (i.e., gin/gcn)
+model: 
+  num_layer: 5                  # number of graph conv layers
+  emb_dim: 300                  # embedding dimension in graph conv layers
+  feat_dim: 512                 # output feature dimention
+  drop_ratio: 0.3               # dropout ratio
+  pool: mean                    # readout pooling (i.e., mean/max/add)
+
+dataset:
+  num_workers: 4                # dataloader number of workers
+  valid_size: 0.1               # ratio of validation data
+  test_size: 0.1                # ratio of test data
+  splitting: scaffold           # data splitting (i.e., random/scaffold)
